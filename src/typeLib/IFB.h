@@ -2,28 +2,35 @@
 #include <vector>
 #include <string>
 #include <map>
+#include <globalOutputsList.h>
 
 
-template <typename T>
+
 class IFB{
 protected:
-    std::map<std::string, T> inputs;
-    std::map<std::pair<std::string, std::string>, T>  outputs;
-    virtual void execute() = 0;
-    void sentOutputs();
+    std::map<std::string, std::string> inputs;
+    GlobalOutputs* outputs;
+    std::map<std::string, std::string> connections;
     std::vector<IFB*> next;
 
+    std::string FBname;
+
+    virtual void execute() = 0;
+    void sentOutputs();
+    
 public:
-    IFB(std::map<std::string, T> inputs,
-        std::map<std::pair<std::string, std::string>, T>  outputs, 
-        std::vector<IFB*> next);
+    IFB(std::map<std::string, std::string> inputs,
+        GlobalOutputs* outputs, 
+        std::map<std::string, std::string> connections, 
+        std::vector<IFB*> next,
+        std::string FBname);
     void call();
 };
 
 
 // output format = {
-//      {"out1", "in1"}: "value1",
-//      {"out2", "in2"}: "value2",
+//      "in1": "value1",
+//      "in2": "value2",
 //      ....
 // }
 

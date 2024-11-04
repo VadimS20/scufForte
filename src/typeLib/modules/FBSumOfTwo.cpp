@@ -3,7 +3,7 @@
 void FBSumOfTwo::execute(){
     int sum=0;
     for(const auto p:inputs){
-        sum+=p.second;
+        sum += std::stoi(p.second);
     }
-    outputs[{"out_1",}]=sum;
+    this->outputs->setOutput("sum",std::to_string(sum));
 }
