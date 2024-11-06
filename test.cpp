@@ -14,7 +14,7 @@ int main() {
         {"out1", "in1"}
     };
     std::map<std::string, std::string> outputs = {
-        {"out1", NULL}
+        {"out1", ""}
     };
     GlobalOutputs* outputsAgregtor = GlobalOutputs::getInstance(outputs);
     std::vector<IFB*> next;

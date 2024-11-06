@@ -1,9 +1,8 @@
 add_subdirectory(modules)
 
 set(SOURCE
-    IFB.cpp
-    globalOutputsList.cpp
-    globalOutputsList.h
-    IFB.h)
+    "./IFB.cpp"
+    "./globalOutputsList.cpp"
+    )
 
-add_executable(${PROJECT_NAME} ${SOURCE})
+add_library(TypeLib ${SOURCE})
