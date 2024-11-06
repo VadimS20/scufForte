@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FB_Blocks>
+	<FunctionBlock>
+		<Name>FC_ADD</Name>
+		<Type>FC_ADD</Type>
+		<Description>Блок для сложения двух входных значений.</Description>
+		<Interface>
+			<InputVariables>
+				<Variable>
+					<Name>IN_1</Name>
+				</Variable>
+				<Variable>
+					<Name>IN_2</Name>
+				</Variable>
+			</InputVariables>
+			<OutputVariables>
+				<Variable>
+					<Name>OUT</Name>
+				</Variable>
+			</OutputVariables>
+		</Interface>
+	</FunctionBlock>
+	<FunctionBlock>
+		<Name>FC_DISPLAY</Name>
+		<Type>FC_DISPLAY</Type>
+		<Description>Блок для вывода результата на экран.</Description>
+		<Interface>
+			<InputVariables>
+				<Variable>
+					<Name>IN</Name>
+				</Variable>
+			</InputVariables>
+			<OutputVariables>
+				<Variable>
+					<Name>OUT</Name>
+				</Variable>
+			</OutputVariables>
+			<Connections>
+				<Connection>
+					<Source>FC_ADD.OUT_1</Source>
+					<Target>FC_DISPLAY.IN_1</Target>
+				</Connection>
+			</Connections>
+		</Interface>
+	</FunctionBlock>
+</FB_Blocks>

@@ -1,0 +1,19 @@
+{
+    "files.associations": {
+        "*.ipp": "cpp",
+        "array": "cpp",
+        "compare": "cpp",
+        "format": "cpp",
+        "functional": "cpp",
+        "memory": "cpp",
+        "tuple": "cpp",
+        "type_traits": "cpp",
+        "utility": "cpp",
+        "xmemory": "cpp",
+        "xstring": "cpp",
+        "xtr1common": "cpp",
+        "xutility": "cpp",
+        "ostream": "cpp",
+        "iostream": "cpp"
+    }
+}
