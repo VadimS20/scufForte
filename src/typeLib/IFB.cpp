@@ -25,3 +25,8 @@ void IFB::call(){
 void IFB::sentOutputs(){
 
 }
+
+void IFB::setInputs(std::map<std::string, std::string> inputs){
+    this->inputs = inputs;
+}
+
