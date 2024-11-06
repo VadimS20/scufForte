@@ -29,16 +29,16 @@ public:
 
 
 // output format = {
-//      "in1": "value1",
-//      "in2": "value2",
+//      "FBname.in1": "value1",
+//      "FBname.in2": "value2",
 //      ....
 // }
 
-// to constuct send value as null
+// when init class object send value as ""
 
 
 // input format = {
-//      "in1": "value1",
-//      "in2": "value2",
+//      "FBname.in1": "value1",
+//      "FBname.in2": "value2",
 //       ....
 // }

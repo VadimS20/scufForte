@@ -7,18 +7,28 @@
 
 int main() {
     std::map<std::string, std::string> inputs = {
-        {"in1", "1"},
-        {"in2", "2"},
+        {"FBSumOfTwo.in1", "1"},
+        {"FBSumOfTwo.in2", "2"},
     };
     std::map<std::string, std::string> connections = {
-        {"out1", "in1"}
+        {"FBSumOfTwo.out1", "FBSumOfTwo.in1"}
     };
     std::map<std::string, std::string> outputs = {
-        {"out1", ""}
+        {"FBSumOfTwo.out1", ""}
     };
     GlobalOutputs* outputsAgregtor = GlobalOutputs::getInstance(outputs);
+
+    for (auto x : outputsAgregtor->getOutputs()) {
+        std::cout << x.first << " " << x.second << std::endl;
+    }
+
     std::vector<IFB*> next;
     next.push_back(new FBSumOfTwo(inputs, outputsAgregtor, connections, next, "FBSumOfTwo"));
     next[0]->call();
+
+    for (auto x : outputsAgregtor->getOutputs()) {
+        std::cout << x.first << " " << x.second << std::endl;
+    }
+
     return 0;
 }
