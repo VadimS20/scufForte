@@ -3,19 +3,20 @@
 	<FunctionBlock>
 		<Name>FC_ADD</Name>
 		<Type>FC_ADD</Type>
-		<Description>Блок для сложения двух входных значений.</Description>
 		<Interface>
 			<InputVariables>
 				<Variable>
-					<Name>IN_1</Name>
+					<Name>FC_ADD.IN_1</Name>
+					<Value>1</Value>
 				</Variable>
 				<Variable>
-					<Name>IN_2</Name>
+					<Name>FC_ADD.IN_2</Name>
+					<Value>2</Value>
 				</Variable>
 			</InputVariables>
 			<OutputVariables>
 				<Variable>
-					<Name>OUT</Name>
+					<Name>FC_ADD.OUT_1</Name>
 				</Variable>
 			</OutputVariables>
 		</Interface>
@@ -23,16 +24,15 @@
 	<FunctionBlock>
 		<Name>FC_DISPLAY</Name>
 		<Type>FC_DISPLAY</Type>
-		<Description>Блок для вывода результата на экран.</Description>
 		<Interface>
 			<InputVariables>
 				<Variable>
-					<Name>IN</Name>
+					<Name>FC_DISPLAY.IN</Name>
 				</Variable>
 			</InputVariables>
 			<OutputVariables>
 				<Variable>
-					<Name>OUT</Name>
+					<Name>FC_DISPLAY.OUT</Name>
 				</Variable>
 			</OutputVariables>
 			<Connections>

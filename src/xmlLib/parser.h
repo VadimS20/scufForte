@@ -1,11 +1,9 @@
 #pragma once
 #include <string>
+#include "iostream"
 #include "../../lib/pugixml.hpp"
 
 class Parser{
 public:
-    Parser(std::string pathToFile);
-    void parse();
-private:
-    std::string path;
+    static void parse(std::string pathToFile);
 };
