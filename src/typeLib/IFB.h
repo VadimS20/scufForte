@@ -25,7 +25,8 @@ public:
         std::vector<IFB*> next,
         std::string FBname);
     void call();
-
+    std::vector<IFB*> getNext();
+    void setNext(std::vector<IFB*> newNext);
     void setInputs(std::map<std::string, std::string> inputs);
 };
 
