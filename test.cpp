@@ -2,7 +2,7 @@
 #include <vector>
 #include <map>
 
-#include "./src/xmlLib/parser.h"
+#include "./src/app/parser.h"
 #include "./src/typeLib/IFB.h"
 #include "./src/typeLib/modules/FBSumOfTwo.h"
 #include "./src/typeLib/modules/FBConsoleOut.h"
@@ -10,7 +10,7 @@
 int main() {
     Parser::parse("test.xml");
 
-
+    
     std::map<std::string, std::string> inputs = {
         {"FBSumOfTwo.in1", "1"},
         {"FBSumOfTwo.in2", "2"},
