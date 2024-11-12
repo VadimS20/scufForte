@@ -61,7 +61,7 @@ int main() {
 
     next.push_back(new FBSumOfTwo(inputs, outputsAgregtor, connections, next_2, "FBSumOfTwo"));
     next_2.push_back(new FBConsoleOut({{"FBConsoleOut.in1", outputsAgregtor->getOutputs()["FBSumOfTwo.out1"]}},
-                                     outputsAgregtor, connections, next_3, "FBConsoleOut"));
+                                     outputsAgregtor, connections, next, "FBConsoleOut"));
     
     next[0]->setNext(next_2);
 

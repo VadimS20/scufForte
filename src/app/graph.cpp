@@ -16,7 +16,7 @@ void Graph::BFS(std::vector<IFB*> start,GlobalOutputs* outputsAgregtor,std::map<
         auto newInputs=inputs;
 
         for(const auto& input:inputs){
-            if(connections.find(input.first)!=connections.end()){
+            if(connections.find(input.first)!=connections.end() && outputs[connections[input.first]]!=""){
                 newInputs[input.first]=outputs[connections[input.first]];
             }
         }
