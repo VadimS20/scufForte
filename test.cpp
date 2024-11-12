@@ -53,15 +53,16 @@ int main() {
 
     std::vector<IFB*> next;
     std::vector<IFB*> next_2;
+    std::vector<IFB*> next_3;
 
     next.push_back(new FBSumOfTwo(inputs, outputsAgregtor, connections, next_2, "FBSumOfTwo"));
     next_2.push_back(new FBConsoleOut({{"FBConsoleOut.in1", outputsAgregtor->getOutputs()["FBSumOfTwo.out1"]}},
-                                     outputsAgregtor, connections, next, "FBConsoleOut"));
+                                     outputsAgregtor, connections, next_3, "FBConsoleOut"));
     
     next[0]->setNext(next_2);
 
-    Graph graph;
-    graph.BFS(next);
+    auto graph=new Graph();
+    graph->BFS(next);
 
     
 

@@ -1,7 +1,6 @@
 #include <queue>
-#include "../IFB.h"
+#include "../typeLib/IFB.h"
 class Graph{
 public:
-    Graph();
     void BFS(std::vector<IFB*> start);  
 };
