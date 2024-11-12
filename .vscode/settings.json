@@ -87,6 +87,11 @@
         "xlocmon": "cpp",
         "xlocnum": "cpp",
         "xloctime": "cpp",
-        "xtree": "cpp"
+        "xtree": "cpp",
+        "*.tcc": "cpp",
+        "memory_resource": "cpp",
+        "string_view": "cpp",
+        "numbers": "cpp",
+        "cinttypes": "cpp"
     }
 }

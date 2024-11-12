@@ -1,44 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <FB_Blocks>
 	<FunctionBlock>
-		<Name>FC_ADD</Name>
-		<Type>FC_ADD</Type>
+		<Name>FBSumOfTwo</Name>
+		<Type>FBSumOfTwo</Type>
 		<Interface>
 			<InputVariables>
 				<Variable>
-					<Name>FC_ADD.IN_1</Name>
+					<Name>FBSumOfTwo.IN_1</Name>
 					<Value>1</Value>
 				</Variable>
 				<Variable>
-					<Name>FC_ADD.IN_2</Name>
+					<Name>FBSumOfTwo.IN_2</Name>
 					<Value>2</Value>
 				</Variable>
 			</InputVariables>
 			<OutputVariables>
 				<Variable>
-					<Name>FC_ADD.OUT_1</Name>
+					<Name>FBSumOfTwo.OUT_1</Name>
 				</Variable>
 			</OutputVariables>
 		</Interface>
 	</FunctionBlock>
 	<FunctionBlock>
-		<Name>FC_DISPLAY</Name>
-		<Type>FC_DISPLAY</Type>
+		<Name>FBConsoleOut</Name>
+		<Type>FBConsoleOut</Type>
 		<Interface>
 			<InputVariables>
 				<Variable>
-					<Name>FC_DISPLAY.IN</Name>
+					<Name>FBConsoleOut.IN</Name>
 				</Variable>
 			</InputVariables>
 			<OutputVariables>
 				<Variable>
-					<Name>FC_DISPLAY.OUT</Name>
+					<Name>FBConsoleOut.OUT</Name>
 				</Variable>
 			</OutputVariables>
 			<Connections>
 				<Connection>
-					<Source>FC_ADD.OUT_1</Source>
-					<Target>FC_DISPLAY.IN_1</Target>
+					<Source>FBSumOfTwo.OUT_1</Source>
+					<Target>FBConsoleOut.IN_1</Target>
 				</Connection>
 			</Connections>
 		</Interface>

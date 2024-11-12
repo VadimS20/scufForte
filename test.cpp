@@ -19,7 +19,7 @@ void block(){
         {"FBSumOfTwo.in2", "2"},
     };
     std::map<std::string, std::string> connections = {
-        {"FBSumOfTwo.out1", "FBSumOfTwo.in1"}
+        {"FBSumOfTwo.out1", "FBConsoleOut.in1"}
     };
     std::map<std::string, std::string> outputs = {
         {"FBSumOfTwo.out1", ""}
@@ -39,12 +39,16 @@ void block(){
 
 int main() {
     
+    parse();
+
+    // block();
+
     std::map<std::string, std::string> inputs = {
         {"FBSumOfTwo.in1", "1"},
         {"FBSumOfTwo.in2", "2"},
     };
     std::map<std::string, std::string> connections = {
-        {"FBSumOfTwo.out1", "FBSumOfTwo.in1"}
+        {"FBConsoleOut.in1","FBSumOfTwo.out1" }
     };
     std::map<std::string, std::string> outputs = {
         {"FBSumOfTwo.out1", ""}
@@ -62,7 +66,7 @@ int main() {
     next[0]->setNext(next_2);
 
     auto graph=new Graph();
-    graph->BFS(next);
+    graph->BFS(next,outputsAgregtor,connections);
 
     
 
