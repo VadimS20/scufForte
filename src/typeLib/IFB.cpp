@@ -1,7 +1,7 @@
 #include "IFB.h"
 
 IFB::IFB(std::map<std::string, std::string> inputs, 
-            std::map<std::string, std::string> connections, 
+            std::map<std::string, std::vector<std::string>> connections, 
             std::vector<std::string> next,
             std::string FBname){
 
@@ -19,10 +19,13 @@ void IFB::call(GlobalOutputs* outputs){
     this->sentOutputs();
 }
 
-std::map<std::string, std::string> IFB::getConnections(){
+std::map<std::string, std::vector<std::string>> IFB::getConnections(){
     return this->connections;
 }
 
+std::string IFB::getName(){
+    return this->FBname;
+}
 //TODO: do this funcz
 void IFB::sentOutputs(){
 

@@ -16,8 +16,6 @@ std::pair<std::vector<IFB*>, GlobalOutputs*> Parser::parse(std::string pathToFil
     std::vector<IFB*> FBs;
 
     std::map<std::string, std::string> outputs;
-
-    std::map<std::string, std::map<std::string, std::map<std::string, std::string>>> result;
     
     for (pugi::xml_node fbNode = root.child("FunctionBlock"); fbNode; fbNode = fbNode.next_sibling("FunctionBlock")) {
         std::string name = fbNode.child("Name").text().as_string();
@@ -45,14 +43,15 @@ std::pair<std::vector<IFB*>, GlobalOutputs*> Parser::parse(std::string pathToFil
             outputs[outputNode.child("Name").text().as_string()] = "";
         }
 
-        std::map<std::string, std::string> connections;
+        std::map<std::string, std::vector<std::string>> connections;
         std::vector<std::string> next;
         std::cout << "  Connections:" << std::endl;
         for (pugi::xml_node connNode = var.child("Connections").child("Connection"); connNode; connNode = connNode.next_sibling("Connection")) {
             std::cout << "    - " << connNode.child("Source").text().as_string() <<" ---> " << connNode.child("Target").text().as_string() << std::endl;
 
             std::string connTo = connNode.child("Target").text().as_string();
-            connections[connNode.child("Source").text().as_string()] = connTo;
+
+            connections[connNode.child("Target").text().as_string()].push_back(connNode.child("Source").text().as_string());
             if (connTo.find("REQ") != std::string::npos) {
                 next.push_back(connTo);
             }

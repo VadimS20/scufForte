@@ -1,3 +1,5 @@
+#pragma once
+
 #include <queue>
 #include "iostream"
 #include "../typeLib/IFB.h"
@@ -5,5 +7,5 @@
 
 class Graph{
 public:
-    void BFS(std::vector<IFB*> start,GlobalOutputs* outputsAgregtor,std::map<std::string, std::string> connections);  
+    void BFS(std::vector<IFB*> start,GlobalOutputs* outputsAgregtor);  
 };

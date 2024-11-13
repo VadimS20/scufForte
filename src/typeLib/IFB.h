@@ -10,7 +10,7 @@ class IFB{
 protected:
     std::map<std::string, std::string> inputs;
     GlobalOutputs* outputs;
-    std::map<std::string, std::string> connections;
+    std::map<std::string, std::vector<std::string>> connections;
     std::vector<std::string> next;
 
     std::string FBname;
@@ -20,13 +20,14 @@ protected:
     
 public:
     IFB(std::map<std::string, std::string> inputs,
-        std::map<std::string, std::string> connections, 
+        std::map<std::string, std::vector<std::string>> connections, 
         std::vector<std::string> next,
         std::string FBname);
     void call(GlobalOutputs* outputs);
     std::vector<std::string> getNext();
-    std::map<std::string, std::string> getConnections();
+    std::map<std::string, std::vector<std::string>> getConnections();
     std::map<std::string, std::string> getInputs();
+    std::string getName();
     void setNext(std::vector<std::string> newNext);
     void setInputs(std::map<std::string, std::string> inputs);
 };

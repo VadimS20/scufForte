@@ -1,10 +1,8 @@
 #include "graph.h"
 
-void Graph::BFS(std::vector<IFB*> start, GlobalOutputs* outputsAgregtor, std::map<std::string, std::string> connections){
+void Graph::BFS(std::vector<IFB*> start, GlobalOutputs* outputsAgregtor){
     std::queue<IFB*> queue;
-    for(const auto& block : start){
-        queue.push(block);
-    }
+    // queue.push(start[0]);
     while(!queue.empty()){
         auto* block=queue.front();
         queue.pop();
@@ -15,19 +13,31 @@ void Graph::BFS(std::vector<IFB*> start, GlobalOutputs* outputsAgregtor, std::ma
 
         auto newInputs = inputs;
 
+        auto connections=block->getConnections();
+
         for(const auto& input:inputs){
-            if(connections.find(input.first)!=connections.end() && outputs[connections[input.first]]!=""){
-                newInputs[input.first]=outputs[connections[input.first]];
+            for(const auto& conn:connections[input.first]){
+                if(outputs[conn]!=""){
+                    newInputs[input.first]=outputs[conn];
+                }
             }
         }
 
         block->setInputs(newInputs);
+        block->call(outputsAgregtor);
 
-        block->call();
-        auto blocks=block->getNext();
-        for(const auto& b:blocks){
-            queue.push(b);
+        auto next=block->getNext();
+
+
+
+        for(const std::string nextConn:next){
+            for(const auto& block:start){
+                if(block->getName()==nextConn.substr(0,nextConn.length()-4)){
+                    queue.push(block);
+                }
+            }
         }
+
     }
 }
 
