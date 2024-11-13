@@ -1,9 +1,8 @@
 #include "IFB.h"
 
-IFB::IFB(std::map<std::string, std::string> inputs,
-            GlobalOutputs* outputs, 
+IFB::IFB(std::map<std::string, std::string> inputs, 
             std::map<std::string, std::string> connections, 
-            std::vector<IFB*> next,
+            std::vector<std::string> next,
             std::string FBname){
 
             this->FBname = FBname;
@@ -11,13 +10,12 @@ IFB::IFB(std::map<std::string, std::string> inputs,
             this->inputs = inputs;
             this->outputs = outputs;
             this->next = next;
-            this->outputs = GlobalOutputs::getInstance(outputs->getOutputs());
 
         }
 
 
-void IFB::call(){
-    this->execute();
+void IFB::call(GlobalOutputs* outputs){
+    this->execute(outputs);
     this->sentOutputs();
 }
 
@@ -30,11 +28,11 @@ void IFB::sentOutputs(){
 
 }
 
-void IFB::setNext(std::vector<IFB*> newNext){
+void IFB::setNext(std::vector<std::string> newNext){
     this->next=newNext;
 }
 
-std::vector<IFB*> IFB::getNext(){
+std::vector<std::string> IFB::getNext(){
     return this->next;
 }
 

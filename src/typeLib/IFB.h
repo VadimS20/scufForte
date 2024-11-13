@@ -11,24 +11,23 @@ protected:
     std::map<std::string, std::string> inputs;
     GlobalOutputs* outputs;
     std::map<std::string, std::string> connections;
-    std::vector<IFB*> next;
+    std::vector<std::string> next;
 
     std::string FBname;
 
-    virtual void execute() = 0;
+    virtual void execute(GlobalOutputs* outputs) = 0;
     void sentOutputs();
     
 public:
     IFB(std::map<std::string, std::string> inputs,
-        GlobalOutputs* outputs, 
         std::map<std::string, std::string> connections, 
-        std::vector<IFB*> next,
+        std::vector<std::string> next,
         std::string FBname);
-    void call();
-    std::vector<IFB*> getNext();
+    void call(GlobalOutputs* outputs);
+    std::vector<std::string> getNext();
     std::map<std::string, std::string> getConnections();
     std::map<std::string, std::string> getInputs();
-    void setNext(std::vector<IFB*> newNext);
+    void setNext(std::vector<std::string> newNext);
     void setInputs(std::map<std::string, std::string> inputs);
 };
 

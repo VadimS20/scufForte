@@ -1,19 +1,19 @@
 #include "graph.h"
 
-void Graph::BFS(std::vector<IFB*> start,GlobalOutputs* outputsAgregtor,std::map<std::string, std::string> connections){
+void Graph::BFS(std::vector<IFB*> start, GlobalOutputs* outputsAgregtor, std::map<std::string, std::string> connections){
     std::queue<IFB*> queue;
-    for(const auto& block:start){
+    for(const auto& block : start){
         queue.push(block);
     }
     while(!queue.empty()){
         auto* block=queue.front();
         queue.pop();
 
-        auto outputs= outputsAgregtor->getOutputs();
+        auto outputs = outputsAgregtor->getOutputs();
 
-        auto inputs=block->getInputs();
+        auto inputs = block->getInputs();
 
-        auto newInputs=inputs;
+        auto newInputs = inputs;
 
         for(const auto& input:inputs){
             if(connections.find(input.first)!=connections.end() && outputs[connections[input.first]]!=""){
