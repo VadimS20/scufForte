@@ -21,9 +21,25 @@ void IFB::call(){
     this->sentOutputs();
 }
 
-//TODO: do this func
+std::map<std::string, std::string> IFB::getConnections(){
+    return this->connections;
+}
+
+//TODO: do this funcz
 void IFB::sentOutputs(){
 
+}
+
+void IFB::setNext(std::vector<IFB*> newNext){
+    this->next=newNext;
+}
+
+std::vector<IFB*> IFB::getNext(){
+    return this->next;
+}
+
+std::map<std::string, std::string> IFB::getInputs(){
+    return this->inputs;
 }
 
 void IFB::setInputs(std::map<std::string, std::string> inputs){
