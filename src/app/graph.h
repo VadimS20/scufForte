@@ -5,5 +5,6 @@
 
 class Graph{
 public:
-    void BFS(std::vector<IFB*> start,GlobalOutputs* outputsAgregtor,std::map<std::string, std::string> connections);  
+    IFB search(std::string nameFB);
+    void BFS(std::vector<IFB*> start, std::vector<IFB*> all, GlobalOutputs* outputsAgregtor);  
 };

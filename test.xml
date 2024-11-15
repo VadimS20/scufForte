@@ -24,6 +24,10 @@
 					<Source>FBSumOfTwo.CNF</Source>
 					<Target>FBConsoleOut.REQ</Target>
 				</Connection>
+				<Connection>
+					<Source>FBSumOfTwo.OUT_1</Source>
+					<Target>FBConsoleOut.IN_1</Target>
+				</Connection>
 			</Connections>
 		</Interface>
 	</FunctionBlock>
@@ -42,10 +46,6 @@
 				</Variable>
 			</OutputVariables>
 			<Connections>
-				<Connection>
-					<Source>FBSumOfTwo.OUT_1</Source>
-					<Target>FBConsoleOut.IN_1</Target>
-				</Connection>
 				<Connection>
 					<Source>FBConsoleOut.CNF</Source>
 					<Target>FBSumOfTwo.REQ</Target>

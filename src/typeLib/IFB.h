@@ -3,6 +3,7 @@
 #include <vector>
 #include <string>
 #include <map>
+#include <iostream>
 #include "globalOutputsList.h"
 
 
@@ -27,6 +28,7 @@ public:
     std::vector<std::string> getNext();
     std::map<std::string, std::string> getConnections();
     std::map<std::string, std::string> getInputs();
+    std::string getName();
     void setNext(std::vector<std::string> newNext);
     void setInputs(std::map<std::string, std::string> inputs);
 };
