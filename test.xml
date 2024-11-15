@@ -6,27 +6,27 @@
 		<Interface>
 			<InputVariables>
 				<Variable>
-					<Name>FBSumOfTwo.IN_1</Name>
+					<Name>FBSumOfTwo_1.IN_1</Name>
 					<Value>1</Value>
 				</Variable>
 				<Variable>
-					<Name>FBSumOfTwo.IN_2</Name>
+					<Name>FBSumOfTwo_1.IN_2</Name>
 					<Value>2</Value>
 				</Variable>
 			</InputVariables>
 			<OutputVariables>
 				<Variable>
-					<Name>FBSumOfTwo.OUT_1</Name>
+					<Name>FBSumOfTwo_1.OUT_1</Name>
 				</Variable>
 			</OutputVariables>
 			<Connections>
 				<Connection>
-					<Source>FBSumOfTwo.CNF</Source>
-					<Target>FBConsoleOut.REQ</Target>
+					<Source>FBSumOfTwo_1.CNF</Source>
+					<Target>FBConsoleOut_2.REQ</Target>
 				</Connection>
 				<Connection>
-					<Source>FBSumOfTwo.OUT_1</Source>
-					<Target>FBConsoleOut.IN_1</Target>
+					<Source>FBConsoleOut_2.OUT</Source>
+					<Target>FBSumOfTwo_1.IN_1</Target>
 				</Connection>
 			</Connections>
 		</Interface>
@@ -37,18 +37,22 @@
 		<Interface>
 			<InputVariables>
 				<Variable>
-					<Name>FBConsoleOut.IN</Name>
+					<Name>FBConsoleOut_2.IN_1</Name>
 				</Variable>
 			</InputVariables>
 			<OutputVariables>
 				<Variable>
-					<Name>FBConsoleOut.OUT</Name>
+					<Name>FBConsoleOut_2.OUT</Name>
 				</Variable>
 			</OutputVariables>
 			<Connections>
+			<Connection>
+					<Source>FBConsoleOut_2.CNF</Source>
+					<Target>FBSumOfTwo_1.REQ</Target>
+				</Connection>
 				<Connection>
-					<Source>FBConsoleOut.CNF</Source>
-					<Target>FBSumOfTwo.REQ</Target>
+					<Source>FBSumOfTwo_1.OUT</Source>
+					<Target>FBConsoleOut_2.IN_1</Target>
 				</Connection>
 			</Connections>
 		</Interface>

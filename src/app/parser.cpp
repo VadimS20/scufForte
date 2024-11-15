@@ -22,40 +22,39 @@ std::pair<std::vector<IFB*>, GlobalOutputs*> Parser::parse(std::string pathToFil
         std::string type = fbNode.child("Type").text().as_string();
         std::string description = fbNode.child("Description").text().as_string();
 
-        std::cout << "Function Block:" << std::endl;
-        std::cout << "  Name: " << name << std::endl;
-        std::cout << "  Type: " << type << std::endl;
+        // std::cout << "Function Block:" << std::endl;
+        // std::cout << "  Name: " << name << std::endl;
+        // std::cout << "  Type: " << type << std::endl;
 
         auto var = fbNode.child("Interface");
 
         std::map<std::string, std::string> inputs;
-        std::cout << "  Input Variables:" << std::endl;
+        //std::cout << "  Input Variables:" << std::endl;
         for (pugi::xml_node inputNode = var.child("InputVariables").child("Variable"); inputNode; inputNode = inputNode.next_sibling("Variable")) {
-            std::cout << "    - " << inputNode.child("Name").text().as_string() <<" value: " << inputNode.child("Value").text().as_string() <<std::endl;
+            //std::cout << "    - " << inputNode.child("Name").text().as_string() <<" value: " << inputNode.child("Value").text().as_string() <<std::endl;
 
-            inputs[inputNode.child("Name").value()] = inputNode.child("Value").text().as_string();
+            inputs[inputNode.child("Name").text().as_string()] = inputNode.child("Value").text().as_string();
         }
         
-        std::cout << "  Output Variables:" << std::endl;
+        //std::cout << "  Output Variables:" << std::endl;
         for (pugi::xml_node outputNode = var.child("OutputVariables").child("Variable"); outputNode; outputNode = outputNode.next_sibling("Variable")) {
-            std::cout << "    - " << outputNode.child("Name").text().as_string() << std::endl;
+            //std::cout << "    - " << outputNode.child("Name").text().as_string() << std::endl;
 
             outputs[outputNode.child("Name").text().as_string()] = "";
         }
 
         std::map<std::string, std::string> connections;
         std::vector<std::string> next;
-        std::cout << "  Connections:" << std::endl;
+        //std::cout << "  Connections:" << std::endl;
         for (pugi::xml_node connNode = var.child("Connections").child("Connection"); connNode; connNode = connNode.next_sibling("Connection")) {
-            std::cout << "    - " << connNode.child("Source").text().as_string() <<" ---> " << connNode.child("Target").text().as_string() << std::endl;
+            //std::cout << "    - " << connNode.child("Source").text().as_string() <<" ---> " << connNode.child("Target").text().as_string() << std::endl;
 
             std::string connTo = connNode.child("Target").text().as_string();
             
-            if (connTo.find("REQ") != std::string::npos) {
+            if (connTo.find("REQ")!=std::string::npos) {
                 next.push_back(connTo);
-                std::cerr << connTo << "\n";
             } else { 
-                connections[connNode.child("Source").text().as_string()] = connTo;
+                connections[connTo] = connNode.child("Source").text().as_string();
             }
         }
 
@@ -64,10 +63,10 @@ std::pair<std::vector<IFB*>, GlobalOutputs*> Parser::parse(std::string pathToFil
         } else if (type == "FBConsoleOut") {
             FBs.push_back(new FBConsoleOut(inputs, connections, next, name));
         } else {
-            std::cout << "Unknown function block type" << std::endl;
+            //std::cout << "Unknown function block type" << std::endl;
         }
         
-        std::cout << std::endl;
+        //std::cout << std::endl;
     }
     GlobalOutputs* Output = GlobalOutputs::getInstance(outputs);
 

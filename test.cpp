@@ -43,12 +43,6 @@ int main() {
     auto all=pair.first;
     auto agregtor=pair.second;
 
-    // block();
-
-
-    
-
-
     std::vector<IFB*> start;
     start.push_back(all[0]);
     auto graph=new Graph();
