@@ -27,11 +27,6 @@ void Graph::BFS(std::vector<IFB*> start, std::vector<IFB*> all, GlobalOutputs* o
             }
         }
 
-
-        for(const auto& inputs:newInputs){
-            std::cerr<<inputs.first<<" "<<inputs.second<<"\n";
-        }
-
         block->setInputs(newInputs);
         block->call(outputsAgregtor);
         auto next=block->getNext();
