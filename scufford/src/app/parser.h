@@ -4,7 +4,7 @@
 #include <map>
 #include <utility>
 #include <iostream>
-#include "../../lib/pugixml.hpp"
+#include <pugixml.hpp>
 #include "../typeLib/IFB.h"
 #include "../typeLib/globalOutputsList.h"
 #include "../typeLib/modules/FBConsoleOut.h"
