@@ -8,11 +8,6 @@
 #include "./src/typeLib/modules/FBSumOfTwo.h"
 #include "./src/typeLib/modules/FBConsoleOut.h"
 
-
-void parse(){
-    Parser::parse("test.xml");
-}
-
 void block(){
     std::map<std::string, std::string> inputs = {
         {"FBSumOfTwo.in1", "1"},
@@ -37,8 +32,7 @@ void block(){
     next[1]->call(outputsAgregtor);
 }
 
-int main() {
-    
+int main() {    
     auto pair=Parser::parse("test.xml");
     auto all=pair.first;
     auto agregtor=pair.second;
@@ -47,8 +41,6 @@ int main() {
     start.push_back(all[0]);
     auto graph=new Graph();
     graph->BFS(start,all,agregtor);
-
-    
 
     return 0;
 }
