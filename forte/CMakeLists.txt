@@ -13,4 +13,4 @@ include_directories(
 )
 
 add_executable(FORTE test.cpp lib/pugixml.cpp)
-target_link_libraries(FORTE TypeLib Modules App)
+target_link_libraries(FORTE App TypeLib Modules)
