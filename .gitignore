@@ -47,5 +47,5 @@ CMakeUserPresets.json
 
 # ignore dirs
 .vscode/**
-forte/build/**
+scufford/build/**
 client/build/**

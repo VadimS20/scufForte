@@ -53,9 +53,9 @@ int main(int argc, char *argv[]) {
 
     pathToFile = program.get("-f");
     port = program.get<int>("-p");
-
+    Server server(port);
     if (pathToFile == ""){
-        Server::server(port);
+        server.runServer();
         runApp("received_file.xml");
     } else {
         runApp(pathToFile);
