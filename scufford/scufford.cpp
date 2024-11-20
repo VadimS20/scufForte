@@ -6,6 +6,10 @@
 #include <cstring>
 #include <arpa/inet.h>
 #include <unistd.h>
+#include <filesystem>
+#include <thread>
+#include <stop_token>
+
 #include <argparse/argparse.hpp>
 
 #include "./src/app/server.h"
@@ -21,7 +25,7 @@ void runApp(std::string xmlFile){
     auto all=pair.first;
     auto agregtor=pair.second;
 
-    std::vector<IFB*> start;
+    std::vector<IFB*> start = {};
     start.push_back(all[0]);
     auto graph=new Graph();
     graph->BFS(start,all,agregtor);
@@ -53,10 +57,24 @@ int main(int argc, char *argv[]) {
 
     pathToFile = program.get("-f");
     port = program.get<int>("-p");
-    Server server(port);
+    
+
     if (pathToFile == ""){
-        server.runServer();
-        runApp("received_file.xml");
+        std::thread appThread; 
+        while (1)
+        {
+            std::this_thread::sleep_for(std::chrono::seconds(1)); // Симуляция ожидания запроса
+            
+            if (std::filesystem::exists("./received_file.xml")) {
+                
+                if (appThread.joinable()) {
+                    appThread.detach(); // Дождаться завершения потока
+                }
+                
+                // Запустить новый поток для обработки нового файла
+                appThread = std::thread(runApp, "received_file.xml");
+            }
+        }
     } else {
         runApp(pathToFile);
     }
