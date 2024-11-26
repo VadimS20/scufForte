@@ -1,4 +1,7 @@
 #pragma once
+#include <iostream>
+#include <fstream>
+#include <sstream>
 #include <string>
 #include <vector>
 #include <map>
@@ -14,4 +17,5 @@
 class Parser{
 public:
     static std::pair<std::vector<IFB*>, GlobalOutputs*> parse(std::string pathToFile);
+    static std::pair<std::vector<IFB*>, GlobalOutputs*> parseFboot(std::string pathToFile);
 };

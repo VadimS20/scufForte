@@ -1,5 +1,5 @@
 ;<Request ID="1" Action="CREATE"><FB Name="EMB_RES" Type="EMB_RES" /></Request>
-EMB_RES;<Request ID="2" Action="CREATE"><FB Name="testfooApp.FBConsoleOut" Type="FBSumOfTwo" /></Request>
+EMB_RES;<Request ID="2" Action="CREATE"><FB Name="testfooApp.FBConsoleOut" Type="FBConsoleOut" /></Request>
 EMB_RES;<Request ID="3" Action="WRITE"><Connection Source="testfooApp.FBSumOfTwo.OUT" Destination="testfooApp.FBConsoleOut.IN1" /></Request>
 EMB_RES;<Request ID="4" Action="CREATE"><FB Name="testfooApp.FBSumOfTwo" Type="FBSumOfTwo" /></Request>
 EMB_RES;<Request ID="5" Action="WRITE"><Connection Source="1" Destination="testfooApp.FBSumOfTwo.IN1" /></Request>

@@ -72,3 +72,94 @@ std::pair<std::vector<IFB*>, GlobalOutputs*> Parser::parse(std::string pathToFil
 
     return std::make_pair(FBs, Output);
 }
+
+
+
+std::pair<std::vector<IFB*>, GlobalOutputs*> parseFboot(std::string pathToFile){
+    std::stringstream xmlStream;
+
+    std::string line;
+ 
+    std::ifstream in(pathToFile); // окрываем файл для чтения
+    if (in.is_open())
+    {
+        while (std::getline(in, line, ';')) {
+            if (line.find("<Request") != std::string::npos) {
+                xmlStream << line << "\n";
+            }
+        }
+    }
+    in.close(); 
+
+////////////////////////////////////////////////////////
+
+    std::string xmlContent=xmlStream.str();
+
+    pugi::xml_document doc;
+    pugi::xml_parse_result result = doc.load_string(xmlContent.c_str());
+
+    if (!result) {
+        std::cerr << "Failed to parse XML: " << result.description() << std::endl;
+        return;
+    }
+
+
+    std::map<std::string,std::string> inputs;
+    std::map<std::string,std::string> outputs;
+    std::map<std::string,std::string> conns;
+
+
+    std::string name="";
+    std::string type="";
+    // Перебираем все Request элементы
+    for (pugi::xml_node request = doc.child("Request"); request; request = request.next_sibling("Request")) {
+        std::string id = request.attribute("ID").as_string();
+        std::string action = request.attribute("Action").as_string();
+
+
+        if(action=="CREATE"){
+            if(name==""){
+                pugi::xml_node fb = request.child("FB");
+                if (fb) {
+                    name = fb.attribute("Name").as_string();
+                    type = fb.attribute("Type").as_string();
+                    //std::cout << "  FB Name: " << (name!="" ? name : "N/A") << ", Type: " << (type!="" ? type : "N/A") << std::endl;
+                }
+
+                // Обработка Connection
+
+            }else{
+                std::cout<<"name: "<<name<<std::endl;
+                std::cout<<"type: "<<type<<std::endl;
+                for(const auto p:inputs){
+                    std::cout<<p.first<<" "<<p.second<<std::endl;
+                }
+                pugi::xml_node fb = request.child("FB");
+                if (fb) {
+                    name = fb.attribute("Name").as_string();
+                    type = fb.attribute("Type").as_string();
+                    //std::cout << "  FB Name: " << (name!="" ? name : "N/A") << ", Type: " << (type!="" ? type : "N/A") << std::endl;
+                }
+                inputs.clear();
+            }
+            
+        }else{
+            pugi::xml_node connection = request.child("Connection");
+            if (connection) {
+                std::string source = connection.attribute("Source").as_string();
+                std::string destination = connection.attribute("Destination").as_string();
+                if(source.find(".")){
+                    inputs[destination]=source;
+                }else{
+                    conns[destination]=source;
+                    outputs[destination]=source;
+                }
+                    //std::cout << "  Connection Source: " << (source ? source : "N/A") << ", Destination: " << (destination ? destination : "N/A") << std::endl;
+            }  
+        }
+        //std::cout << "Request ID: " << (id ? id : "N/A") << ", Action: " << (action ? action : "N/A") << std::endl;
+
+        // Обработка FB
+        
+    }
+}
