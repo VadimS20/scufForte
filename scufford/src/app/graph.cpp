@@ -1,14 +1,23 @@
 #include "graph.h"
 
 
+/**
+ * Destructor for the Graph class.
+ * Cleans up resources by deleting the dynamically allocated array of IFB pointers.
+ */
+Graph::~Graph(){
+    start.clear();
+    all.clear();
+    outputsAgregtor->clear();
+}
 
-void Graph::BFS(std::vector<IFB*> start, std::vector<IFB*> all, GlobalOutputs* outputsAgregtor){
+void Graph::BFS(std::atomic_bool& isGraph){
     std::queue<IFB*> queue;
     for(const auto& block:start){
         queue.push(block);
     }
 
-    while(!queue.empty()){
+    while(!queue.empty() && isGraph){
         auto* block=queue.front();
         queue.pop();
 

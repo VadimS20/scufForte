@@ -69,6 +69,6 @@ std::pair<std::vector<IFB*>, GlobalOutputs*> Parser::parse(std::string pathToFil
         //std::cout << std::endl;
     }
     GlobalOutputs* Output = GlobalOutputs::getInstance(outputs);
-
+    remove(pathToFile.c_str());
     return std::make_pair(FBs, Output);
 }

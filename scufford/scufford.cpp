@@ -20,15 +20,16 @@
 #include "./src/typeLib/modules/FBConsoleOut.h"
 
 
-void runApp(std::string xmlFile){
-    auto pair=Parser::parse(xmlFile);
-    auto all=pair.first;
-    auto agregtor=pair.second;
+void runApp(std::string xmlFile, std::atomic_bool& isGraph){
+    auto pair = Parser::parse(xmlFile);
+    auto all = pair.first;
+    auto agregtor = pair.second;
 
     std::vector<IFB*> start = {};
     start.push_back(all[0]);
-    auto graph=new Graph();
-    graph->BFS(start,all,agregtor);
+    auto graph=new Graph(start,all,agregtor);
+    graph->BFS(isGraph);
+    graph->~Graph();
 }
 
 int main(int argc, char *argv[]) {
@@ -58,25 +59,48 @@ int main(int argc, char *argv[]) {
     pathToFile = program.get("-f");
     port = program.get<int>("-p");
     
-
+    std::atomic_bool isGraph;
     if (pathToFile == ""){
         std::thread appThread; 
         while (1)
         {
-            std::this_thread::sleep_for(std::chrono::seconds(1)); // Симуляция ожидания запроса
+            std::thread serv(Server::server, port);
             
             if (std::filesystem::exists("./received_file.xml")) {
                 
                 if (appThread.joinable()) {
-                    appThread.detach(); // Дождаться завершения потока
+                    isGraph = false;
+                    appThread.detach();
+                    std::this_thread::sleep_for(std::chrono::seconds(1));
                 }
-                
-                // Запустить новый поток для обработки нового файла
-                appThread = std::thread(runApp, "received_file.xml");
+                isGraph = true;
+                appThread = std::thread(runApp, "received_file.xml", std::ref(isGraph));
             }
+            serv.join();
+            // 
         }
     } else {
-        runApp(pathToFile);
+        
+        std::thread appThread; 
+        appThread = std::thread(runApp, pathToFile, std::ref(isGraph));
+        while (1)
+        {
+            remove("received_file.xml");
+            std::thread serv(Server::server, port);
+            
+            if (std::filesystem::exists("./received_file.xml")) {
+                
+                if (appThread.joinable()) {
+                    isGraph = false;
+                    appThread.detach();
+                    std::this_thread::sleep_for(std::chrono::seconds(1));
+                }
+                isGraph = true;
+                appThread = std::thread(runApp, "received_file.xml", std::ref(isGraph));
+            }
+            serv.join();
+            // 
+        }
     }
 
     return 0;
