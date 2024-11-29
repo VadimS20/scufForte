@@ -15,4 +15,5 @@ public:
     std::map<std::string, std::string> getOutputs();
     void setOutputs(std::map<std::string, std::string> outputs);
     void setOutput(std::string name, std::string value);
+    void clear();
 };
