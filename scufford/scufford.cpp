@@ -20,14 +20,16 @@
 #include "./src/typeLib/modules/FBConsoleOut.h"
 
 
+
 void runApp(std::string xmlFile){
-    auto pair=Parser::parse(xmlFile);
+    Parser* p=new Parser();
+    auto pair=p->parse(xmlFile);
     auto all=pair.first;
     auto agregtor=pair.second;
 
     std::vector<IFB*> start = {};
     start.push_back(all[0]);
-    auto graph=new Graph();
+    Graph* graph=new Graph();
     graph->BFS(start,all,agregtor);
 }
 
@@ -60,11 +62,10 @@ int main(int argc, char *argv[]) {
     
 
     if (pathToFile == ""){
-        std::thread appThread; 
+        std::thread appThread;
+        Server::server(port); 
         while (1)
         {
-            std::this_thread::sleep_for(std::chrono::seconds(1)); // Симуляция ожидания запроса
-            
             if (std::filesystem::exists("./received_file.xml")) {
                 
                 if (appThread.joinable()) {
@@ -73,10 +74,30 @@ int main(int argc, char *argv[]) {
                 
                 // Запустить новый поток для обработки нового файла
                 appThread = std::thread(runApp, "received_file.xml");
+                //
             }
+            std::this_thread::sleep_for(std::chrono::seconds(5));
+            remove("received_file.xml");
         }
     } else {
-        runApp(pathToFile);
+        std::thread fileThread(runApp,pathToFile);
+        if (fileThread.joinable()) {
+            fileThread.detach(); // Дождаться завершения потока
+        }   
+        std::thread appThread;
+        Server::server(port); 
+        while (1)
+        {
+            if (std::filesystem::exists("./received_file.xml")) {                
+                if (appThread.joinable()) {
+                    appThread.detach(); // Дождаться завершения потока
+                }              
+                // Запустить новый поток для обработки нового файла
+                appThread = std::thread(runApp, "received_file.xml");
+            }
+            std::this_thread::sleep_for(std::chrono::seconds(5));
+            remove("received_file.xml");
+        }
     }
 
     return 0;

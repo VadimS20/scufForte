@@ -13,5 +13,5 @@
 
 class Parser{
 public:
-    static std::pair<std::vector<IFB*>, GlobalOutputs*> parse(std::string pathToFile);
+    std::pair<std::vector<IFB*>, GlobalOutputs*> parse(std::string pathToFile);
 };
