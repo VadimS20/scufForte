@@ -25,6 +25,8 @@ public:
         std::vector<std::string> next,
         std::string FBname);
     void call(GlobalOutputs* outputs);
+    void addNext(std::string newNext);
+    void setConnections(std::map<std::string,std::string> conn);
     std::vector<std::string> getNext();
     std::map<std::string, std::string> getConnections();
     std::map<std::string, std::string> getInputs();

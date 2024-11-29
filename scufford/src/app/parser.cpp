@@ -63,7 +63,7 @@ std::pair<std::vector<IFB*>, GlobalOutputs*> Parser::parse(std::string pathToFil
         } else if (type == "FBConsoleOut") {
             FBs.push_back(new FBConsoleOut(inputs, connections, next, name));
         } else {
-            //std::cout << "Unknown function block type" << std::endl;
+            std::cout << "Unknown function block type" << std::endl;
         }
         
         //std::cout << std::endl;
@@ -75,7 +75,7 @@ std::pair<std::vector<IFB*>, GlobalOutputs*> Parser::parse(std::string pathToFil
 
 
 
-std::pair<std::vector<IFB*>, GlobalOutputs*> parseFboot(std::string pathToFile){
+std::pair<std::vector<IFB*>, GlobalOutputs*> Parser::parseFboot(std::string pathToFile){
     std::stringstream xmlStream;
 
     std::string line;
@@ -100,18 +100,19 @@ std::pair<std::vector<IFB*>, GlobalOutputs*> parseFboot(std::string pathToFile){
 
     if (!result) {
         std::cerr << "Failed to parse XML: " << result.description() << std::endl;
-        return;
     }
 
+    std::vector<IFB*> FBs;
+    std::map<std::string,IFB*> FBsMap;
 
     std::map<std::string,std::string> inputs;
     std::map<std::string,std::string> outputs;
     std::map<std::string,std::string> conns;
-
+    std::string start;
 
     std::string name="";
     std::string type="";
-    // Перебираем все Request элементы
+
     for (pugi::xml_node request = doc.child("Request"); request; request = request.next_sibling("Request")) {
         std::string id = request.attribute("ID").as_string();
         std::string action = request.attribute("Action").as_string();
@@ -123,24 +124,75 @@ std::pair<std::vector<IFB*>, GlobalOutputs*> parseFboot(std::string pathToFile){
                 if (fb) {
                     name = fb.attribute("Name").as_string();
                     type = fb.attribute("Type").as_string();
-                    //std::cout << "  FB Name: " << (name!="" ? name : "N/A") << ", Type: " << (type!="" ? type : "N/A") << std::endl;
-                }
+                    
 
+                }
+                pugi::xml_node connection=request.child("Connection");
+                if(connection){
+                    name="";
+                    type="";
+                    std::string source = connection.attribute("Source").as_string();
+                    std::string destination = connection.attribute("Destination").as_string();
+                    // std::cout<<source<<"\n";
+                    if(source.find("START")!=std::string::npos){
+                        start=destination.substr(0,destination.length()-4);
+                    }else{
+                        inputs[destination]="";
+                        conns[destination]=source;
+                        outputs[source]="";
+                    }
+                    if(source.find(".CNF")!=std::string::npos){
+                        FBsMap[source.substr(0,source.length()-4)]->addNext(destination);
+                        //std::cout<<source.substr(0,source.length()-4)<<"\n";
+                    }
+
+                }
                 // Обработка Connection
 
+
             }else{
-                std::cout<<"name: "<<name<<std::endl;
-                std::cout<<"type: "<<type<<std::endl;
-                for(const auto p:inputs){
-                    std::cout<<p.first<<" "<<p.second<<std::endl;
-                }
+                pugi::xml_node connection=request.child("Connection");
+                
+                // std::cout<<"name: "<<name<<std::endl;
+                // std::cout<<"type: "<<type<<std::endl;
+                
+                std::vector<std::string> next;
+
+                if (type == "FBSumOfTwo") {            
+                    FBsMap[name]=new FBSumOfTwo(inputs, conns, next, name);        
+                    FBs.push_back(FBsMap[name]);
+                } else if (type == "FBConsoleOut") {
+                    FBsMap[name]=new FBConsoleOut(inputs, conns, next, name);
+                    FBs.push_back(FBsMap[name]);
+                } else {
+                    //std::cout << "Unknown function block type" << std::endl;
+                }    
+
+                inputs.clear();
                 pugi::xml_node fb = request.child("FB");
                 if (fb) {
                     name = fb.attribute("Name").as_string();
                     type = fb.attribute("Type").as_string();
                     //std::cout << "  FB Name: " << (name!="" ? name : "N/A") << ", Type: " << (type!="" ? type : "N/A") << std::endl;
                 }
-                inputs.clear();
+                if(connection){
+                    name="";
+                    type="";
+                    std::string source = connection.attribute("Source").as_string();
+                    std::string destination = connection.attribute("Destination").as_string();
+                    if(source.find(".")==std::string::npos){
+                        inputs[destination]=source;
+                    }else{
+                        inputs[destination]="";
+                        conns[destination]=source;
+                        outputs[source]="";
+                    }
+                    if(source.find(".CNF")!=std::string::npos){
+                        FBsMap[source.substr(0,source.length()-4)]->addNext(destination);
+                        std::cout<<source.substr(0,source.length()-4)<<"\n";
+                    }
+
+                }
             }
             
         }else{
@@ -148,18 +200,34 @@ std::pair<std::vector<IFB*>, GlobalOutputs*> parseFboot(std::string pathToFile){
             if (connection) {
                 std::string source = connection.attribute("Source").as_string();
                 std::string destination = connection.attribute("Destination").as_string();
-                if(source.find(".")){
-                    inputs[destination]=source;
-                }else{
-                    conns[destination]=source;
-                    outputs[destination]=source;
-                }
-                    //std::cout << "  Connection Source: " << (source ? source : "N/A") << ", Destination: " << (destination ? destination : "N/A") << std::endl;
+                if(source.find(".")==std::string::npos){
+                        inputs[destination]=source;
+                    }else{
+                        inputs[destination]="";
+                        conns[destination]=source;
+                        outputs[source]="";
+                    }
+                
             }  
-        }
+        }       
         //std::cout << "Request ID: " << (id ? id : "N/A") << ", Action: " << (action ? action : "N/A") << std::endl;
-
-        // Обработка FB
-        
     }
+    for(const auto FB:FBs){
+        FB->setConnections(conns);
+    }
+
+    int startId=0;
+
+    for(int i=0;i<FBs.size();i++){
+        if(FBs[i]->getName()==start){
+            startId=i;
+            break;
+        }
+    }
+
+    iter_swap(FBs.begin(),FBs.begin()+startId);
+
+    GlobalOutputs* Output = GlobalOutputs::getInstance(outputs);
+
+    return std::make_pair(FBs, Output);    
 }

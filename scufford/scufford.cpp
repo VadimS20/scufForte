@@ -17,7 +17,13 @@
 
 
 void runApp(std::string xmlFile){
-    auto pair=Parser::parse(xmlFile);
+    std::pair<std::vector<IFB*>, GlobalOutputs*> pair;
+
+    if(xmlFile.find(".fboot")!=std::string::npos){
+        pair=Parser::parseFboot(xmlFile);
+    }else{
+        pair=Parser::parse(xmlFile);
+    }    
     auto all=pair.first;
     auto agregtor=pair.second;
 

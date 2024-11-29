@@ -6,6 +6,7 @@
 #include <vector>
 #include <map>
 #include <utility>
+#include <algorithm>
 #include <iostream>
 #include <pugixml.hpp>
 #include "../typeLib/IFB.h"

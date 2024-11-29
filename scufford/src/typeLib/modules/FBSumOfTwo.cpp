@@ -5,5 +5,5 @@ void FBSumOfTwo::execute(GlobalOutputs* outputs){
     for(const auto p : this->inputs){
         sum += std::stoi(p.second);
     }
-    outputs->setOutput(this->FBname+".OUT_1",std::to_string(sum));
+    outputs->setOutput(this->FBname+".OUT",std::to_string(sum));
 }
