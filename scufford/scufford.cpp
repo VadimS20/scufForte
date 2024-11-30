@@ -65,7 +65,7 @@ int main(int argc, char *argv[]) {
     pathToFile = program.get("-f");
     port = program.get<int>("-p");
     
-    std::atomic_bool isGraph;
+    std::atomic_bool isGraph(true);
     if (pathToFile == ""){
         std::thread appThread; 
         while (1)
@@ -105,7 +105,6 @@ int main(int argc, char *argv[]) {
                 appThread = std::thread(runApp, "received_file.xml", std::ref(isGraph));
             }
             serv.join();
-            // 
         }
     }
 
