@@ -16,7 +16,7 @@
 			</InputVariables>
 			<OutputVariables>
 				<Variable>
-					<Name>FBSumOfTwo_1.OUT_1</Name>
+					<Name>FBSumOfTwo_1.OUT</Name>
 				</Variable>
 			</OutputVariables>
 			<Connections>
@@ -25,7 +25,7 @@
 					<Target>FBConsoleOut_2.REQ</Target>
 				</Connection>
 				<Connection>
-					<Source>FBSumOfTwo_1.OUT_1</Source>
+					<Source>FBSumOfTwo_1.OUT</Source>
 					<Target>FBSumOfTwo_1.IN_1</Target>
 				</Connection>
 			</Connections>
@@ -51,7 +51,7 @@
 					<Target>FBSumOfTwo_1.REQ</Target>
 				</Connection>
 				<Connection>
-					<Source>FBSumOfTwo_1.OUT_1</Source>
+					<Source>FBSumOfTwo_1.OUT</Source>
 					<Target>FBConsoleOut_2.IN_1</Target>
 				</Connection>
 			</Connections>
