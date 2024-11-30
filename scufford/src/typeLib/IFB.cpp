@@ -48,3 +48,10 @@ void IFB::setInputs(std::map<std::string, std::string> inputs){
     this->inputs = inputs;
 }
 
+void IFB::addNext(std::string newNext){
+    this->next.push_back(newNext);
+}
+
+void IFB::setConnections(std::map<std::string,std::string> conn){
+    this->connections=conn;
+}

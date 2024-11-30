@@ -20,10 +20,10 @@
 #include "./src/typeLib/modules/FBConsoleOut.h"
 
 
-void runApp(std::string xmlFile, std::atomic_bool& isGraph){
-    auto pair = Parser::parse(xmlFile);
-    auto all = pair.first;
-    auto agregtor = pair.second;
+void runApp(std::string xmlFile){
+    auto pair=Parser::parse(xmlFile);
+    auto all=pair.first;
+    auto agregtor=pair.second;
 
     std::vector<IFB*> start = {};
     start.push_back(all[0]);
