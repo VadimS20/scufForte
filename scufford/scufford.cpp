@@ -20,7 +20,7 @@
 #include "./src/typeLib/modules/FBConsoleOut.h"
 
 
-void runApp(std::string xmlFile, std::atomic_bool& isGraph){
+void graphExecution(std::string xmlFile, std::atomic_bool& isGraph){
     std::pair<std::vector<IFB*>, GlobalOutputs*> pair;
 
     if(xmlFile.find(".fboot")!=std::string::npos){
@@ -36,6 +36,31 @@ void runApp(std::string xmlFile, std::atomic_bool& isGraph){
     auto graph=new Graph(start,all,agregtor);
     graph->BFS(isGraph);
     graph->~Graph();
+}
+
+void runApp(int &port, std::string &pathToFile){
+    std::thread appThread;
+    std::atomic_bool isGraph(true);
+    if (pathToFile != ""){
+        appThread = std::thread(graphExecution, pathToFile, std::ref(isGraph));
+    }
+
+    while (1)
+    {
+        std::thread serv(Server::server, port);
+        
+        if (std::filesystem::exists("./received_file.xml")) {
+            std::cerr<<"File received"<<std::endl;
+            if (appThread.joinable()) {
+                isGraph = false;
+                appThread.detach();
+                std::this_thread::sleep_for(std::chrono::seconds(1));
+            }
+            isGraph = true;
+            appThread = std::thread(graphExecution, "received_file.xml", std::ref(isGraph));
+        }
+        serv.join();
+    }
 }
 
 int main(int argc, char *argv[]) {
@@ -65,48 +90,6 @@ int main(int argc, char *argv[]) {
     pathToFile = program.get("-f");
     port = program.get<int>("-p");
     
-    std::atomic_bool isGraph(true);
-    if (pathToFile == ""){
-        std::thread appThread; 
-        while (1)
-        {
-            std::thread serv(Server::server, port);
-            
-            if (std::filesystem::exists("./received_file.xml")) {
-                
-                if (appThread.joinable()) {
-                    isGraph = false;
-                    appThread.detach();
-                    std::this_thread::sleep_for(std::chrono::seconds(1));
-                }
-                isGraph = true;
-                appThread = std::thread(runApp, "received_file.xml", std::ref(isGraph));
-            }
-            serv.join();
-            // 
-        }
-    } else {
-        
-        std::thread appThread; 
-        appThread = std::thread(runApp, pathToFile, std::ref(isGraph));
-        while (1)
-        {
-            remove("received_file.xml");
-            std::thread serv(Server::server, port);
-            
-            if (std::filesystem::exists("./received_file.xml")) {
-                
-                if (appThread.joinable()) {
-                    isGraph = false;
-                    appThread.detach();
-                    std::this_thread::sleep_for(std::chrono::seconds(1));
-                }
-                isGraph = true;
-                appThread = std::thread(runApp, "received_file.xml", std::ref(isGraph));
-            }
-            serv.join();
-        }
-    }
-
+    runApp(port, pathToFile);
     return 0;
 }
