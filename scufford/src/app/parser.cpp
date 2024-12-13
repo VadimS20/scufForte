@@ -69,7 +69,7 @@ std::pair<std::vector<IFB*>, GlobalOutputs*> Parser::parse(std::string pathToFil
         //std::cout << std::endl;
     }
     GlobalOutputs* Output = GlobalOutputs::getInstance(outputs);
-    remove(pathToFile.c_str());
+    remove("received_file.xml");
     return std::make_pair(FBs, Output);
 }
 
@@ -100,6 +100,7 @@ std::pair<std::vector<IFB*>, GlobalOutputs*> Parser::parseFboot(std::string path
 
     if (!result) {
         std::cerr << "Failed to parse XML: " << result.description() << std::endl;
+        
     }
 
     std::vector<IFB*> FBs;
@@ -228,6 +229,8 @@ std::pair<std::vector<IFB*>, GlobalOutputs*> Parser::parseFboot(std::string path
     iter_swap(FBs.begin(),FBs.begin()+startId);
 
     GlobalOutputs* Output = GlobalOutputs::getInstance(outputs);
+
+    remove("received_file.fboot");
 
     return std::make_pair(FBs, Output);    
 }

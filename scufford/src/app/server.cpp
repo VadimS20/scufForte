@@ -53,6 +53,26 @@ int Server::server(int port){
     std::cout << "Файл получен." << std::endl;
 
     outfile.close();
+
+    std::ifstream in("received_file.xml");
+    std::string line;
+
+    bool status=false;
+
+    std::string needle="EMB_RES";
+    while (std::getline(in, line))  
+    {
+        if (line.length() >= needle.length() && std::equal(needle.begin(), needle.end(), line.begin())) 
+        {
+            status=true;
+        }
+    }
+    
+    if(status){
+        rename("received_file.xml","received_file.fboot");
+    }
+    in.close();
+    
     close(new_socket);
     close(server_fd);
     return 0;

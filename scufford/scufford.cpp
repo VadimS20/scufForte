@@ -23,6 +23,7 @@
 void graphExecution(std::string xmlFile, std::atomic_bool& isGraph){
     std::pair<std::vector<IFB*>, GlobalOutputs*> pair;
 
+    std::cout<<"graph"<<"\n";
     if(xmlFile.find(".fboot")!=std::string::npos){
         pair=Parser::parseFboot(xmlFile);
     }else{
@@ -58,6 +59,16 @@ void runApp(int &port, std::string &pathToFile){
             }
             isGraph = true;
             appThread = std::thread(graphExecution, "received_file.xml", std::ref(isGraph));
+        }
+        if (std::filesystem::exists("./received_file.fboot")) {
+            std::cerr<<"File received"<<std::endl;
+            if (appThread.joinable()) {
+                isGraph = false;
+                appThread.detach();
+                std::this_thread::sleep_for(std::chrono::seconds(1));
+            }
+            isGraph = true;
+            appThread = std::thread(graphExecution, "received_file.fboot", std::ref(isGraph));
         }
         serv.join();
     }
