@@ -27,7 +27,6 @@ std::string IFB::getName(){
     return this->FBname;
 }
 
-//TODO: do this funcz
 void IFB::sentOutputs(){
 
 }

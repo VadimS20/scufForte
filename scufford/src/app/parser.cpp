@@ -21,34 +21,21 @@ std::pair<std::vector<IFB*>, GlobalOutputs*> Parser::parse(std::string pathToFil
         std::string name = fbNode.child("Name").text().as_string();
         std::string type = fbNode.child("Type").text().as_string();
         std::string description = fbNode.child("Description").text().as_string();
-
-        // std::cout << "Function Block:" << std::endl;
-        // std::cout << "  Name: " << name << std::endl;
-        // std::cout << "  Type: " << type << std::endl;
-
         auto var = fbNode.child("Interface");
 
         std::map<std::string, std::string> inputs;
-        //std::cout << "  Input Variables:" << std::endl;
         for (pugi::xml_node inputNode = var.child("InputVariables").child("Variable"); inputNode; inputNode = inputNode.next_sibling("Variable")) {
-            //std::cout << "    - " << inputNode.child("Name").text().as_string() <<" value: " << inputNode.child("Value").text().as_string() <<std::endl;
-
             inputs[inputNode.child("Name").text().as_string()] = inputNode.child("Value").text().as_string();
         }
         
-        //std::cout << "  Output Variables:" << std::endl;
         for (pugi::xml_node outputNode = var.child("OutputVariables").child("Variable"); outputNode; outputNode = outputNode.next_sibling("Variable")) {
-            //std::cout << "    - " << outputNode.child("Name").text().as_string() << std::endl;
-
             outputs[outputNode.child("Name").text().as_string()] = "";
         }
 
         std::map<std::string, std::string> connections;
         std::vector<std::string> next;
-        //std::cout << "  Connections:" << std::endl;
-        for (pugi::xml_node connNode = var.child("Connections").child("Connection"); connNode; connNode = connNode.next_sibling("Connection")) {
-            //std::cout << "    - " << connNode.child("Source").text().as_string() <<" ---> " << connNode.child("Target").text().as_string() << std::endl;
 
+        for (pugi::xml_node connNode = var.child("Connections").child("Connection"); connNode; connNode = connNode.next_sibling("Connection")) {
             std::string connTo = connNode.child("Target").text().as_string();
             
             if (connTo.find("REQ")!=std::string::npos) {
@@ -66,7 +53,6 @@ std::pair<std::vector<IFB*>, GlobalOutputs*> Parser::parse(std::string pathToFil
             std::cout << "Unknown function block type" << std::endl;
         }
         
-        //std::cout << std::endl;
     }
     GlobalOutputs* Output = GlobalOutputs::getInstance(outputs);
     remove("received_file.xml");
@@ -80,7 +66,7 @@ std::pair<std::vector<IFB*>, GlobalOutputs*> Parser::parseFboot(std::string path
 
     std::string line;
  
-    std::ifstream in(pathToFile); // окрываем файл для чтения
+    std::ifstream in(pathToFile); 
     if (in.is_open())
     {
         while (std::getline(in, line, ';')) {
@@ -91,7 +77,7 @@ std::pair<std::vector<IFB*>, GlobalOutputs*> Parser::parseFboot(std::string path
     }
     in.close(); 
 
-////////////////////////////////////////////////////////
+
 
     std::string xmlContent=xmlStream.str();
 
@@ -134,7 +120,6 @@ std::pair<std::vector<IFB*>, GlobalOutputs*> Parser::parseFboot(std::string path
                     type="";
                     std::string source = connection.attribute("Source").as_string();
                     std::string destination = connection.attribute("Destination").as_string();
-                    // std::cout<<source<<"\n";
                     if(source.find("START")!=std::string::npos){
                         start=destination.substr(0,destination.length()-4);
                     }else{
@@ -144,18 +129,13 @@ std::pair<std::vector<IFB*>, GlobalOutputs*> Parser::parseFboot(std::string path
                     }
                     if(source.find(".CNF")!=std::string::npos){
                         FBsMap[source.substr(0,source.length()-4)]->addNext(destination);
-                        //std::cout<<source.substr(0,source.length()-4)<<"\n";
                     }
 
                 }
-                // Обработка Connection
 
 
             }else{
                 pugi::xml_node connection=request.child("Connection");
-                
-                // std::cout<<"name: "<<name<<std::endl;
-                // std::cout<<"type: "<<type<<std::endl;
                 
                 std::vector<std::string> next;
 
@@ -166,7 +146,7 @@ std::pair<std::vector<IFB*>, GlobalOutputs*> Parser::parseFboot(std::string path
                     FBsMap[name]=new FBConsoleOut(inputs, conns, next, name);
                     FBs.push_back(FBsMap[name]);
                 } else {
-                    //std::cout << "Unknown function block type" << std::endl;
+                    std::cout << "Unknown function block type: "<< type << std::endl;
                 }    
 
                 inputs.clear();
@@ -174,7 +154,6 @@ std::pair<std::vector<IFB*>, GlobalOutputs*> Parser::parseFboot(std::string path
                 if (fb) {
                     name = fb.attribute("Name").as_string();
                     type = fb.attribute("Type").as_string();
-                    //std::cout << "  FB Name: " << (name!="" ? name : "N/A") << ", Type: " << (type!="" ? type : "N/A") << std::endl;
                 }
                 if(connection){
                     name="";
@@ -211,7 +190,6 @@ std::pair<std::vector<IFB*>, GlobalOutputs*> Parser::parseFboot(std::string path
                 
             }  
         }       
-        //std::cout << "Request ID: " << (id ? id : "N/A") << ", Action: " << (action ? action : "N/A") << std::endl;
     }
     for(const auto FB:FBs){
         FB->setConnections(conns);

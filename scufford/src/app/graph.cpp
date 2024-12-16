@@ -1,10 +1,6 @@
 #include "graph.h"
 
 
-/**
- * Destructor for the Graph class.
- * Cleans up resources by deleting the dynamically allocated array of IFB pointers.
- */
 Graph::~Graph(){
     start.clear();
     all.clear();

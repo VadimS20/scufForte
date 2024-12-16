@@ -34,19 +34,3 @@ public:
     void setNext(std::vector<std::string> newNext);
     void setInputs(std::map<std::string, std::string> inputs);
 };
-
-
-// output format = {
-//      "FBname.in1": "value1",
-//      "FBname.in2": "value2",
-//      ....
-// }
-
-// when init class object send value as ""
-
-
-// input format = {
-//      "FBname.in1": "value1",
-//      "FBname.in2": "value2",
-//       ....
-// }
