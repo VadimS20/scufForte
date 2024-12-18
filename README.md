@@ -37,4 +37,3 @@ Client
 
 -p "port" #port for connection default: 61499
 
-![image](https://github.com/user-attachments/assets/6a53cb2d-2895-44c1-b8f8-14c581958bda)
